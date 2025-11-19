@@ -35,6 +35,16 @@
         Routes: {{ route_filter }}
       </div>
     {% endif %}
+
+    {% comment %} DEBUG SECTION {% endcomment %}
+    <div class="label label--small text--gray-40" style="background: #222; padding: 8px; border-radius: 4px; margin: 8px 0; font-family: monospace;">
+      DEBUG INFO:<br>
+      root.prd exists: {% if root.prd %}YES{% else %}NO{% endif %}<br>
+      root.prd size: {{ root.prd | size }}<br>
+      predictions exists: {% if predictions %}YES{% else %}NO{% endif %}<br>
+      bus_count: {{ bus_count }}<br>
+      root keys: {{ root | json }}
+    </div>
   </div>
 
   <div class="grid grid--cols-3 gap--small">
@@ -108,6 +118,18 @@
         <div class="content layout--col gap--small">
           <div class="value value--xlarge text--white">⚠️</div>
           <div class="label label--small text--gray-40">No buses available</div>
+          <div class="label label--xsmall text--gray-50" style="margin-top: 8px;">
+            Final bus_count: {{ bus_count }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} DEBUG: Show first prediction if available {% endcomment %}
+    {% if predictions %}
+      <div class="item bg--black card" style="grid-column: 1 / -1;">
+        <div class="label label--xsmall text--gray-40" style="font-family: monospace;">
+          First pred: {{ predictions[0] | json }}
         </div>
       </div>
     {% endif %}
