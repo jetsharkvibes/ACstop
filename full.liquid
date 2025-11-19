@@ -8,7 +8,7 @@
 .badge-on { background: white; border-radius: 12px; padding: 10px; color: #000; font-weight: bold; font-size: 12px; white-space: nowrap; }
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.dest-text { line-height: 1.2; }
+.dest-text { line-height: .7; font-size: 2em; }
 </style>
 
 {% comment %} AC Transit API Response Structure:
@@ -32,6 +32,15 @@
 {% assign route_filter = route_filter | default: "" %}
 
 <div class="layout layout--col gap--small">
+  {% assign bt_response = bustime-response %}
+  {% assign predictions = bt_response.prd %}
+
+  {% if predictions and predictions.size > 0 %}
+    <div class="title_bar">
+      <span class="title">{{ predictions[0].stpnm }}</span>
+    </div>
+  {% endif %}
+
   <div class="header">
     {% if route_filter and route_filter != "" %}
       <div class="label label--small text--gray-60 spacing-xs">
@@ -42,8 +51,6 @@
 
   <div class="grid grid--cols-3 gap--small">
     {% assign bus_count = 0 %}
-    {% assign bt_response = bustime-response %}
-    {% assign predictions = bt_response.prd %}
 
     {% if predictions %}
       {% for pred in predictions limit:6 %}
@@ -84,7 +91,7 @@
                 {% endif %}
 
                 {% if badge_visibility_str contains "wheelchair" %}
-                  <span class="label label--small label--inverted text--gray-40">♿</span>
+                  <span class="label label--small label--inverted text--gray-40">W</span>
                 {% endif %}
               </div>
             {% endunless %}

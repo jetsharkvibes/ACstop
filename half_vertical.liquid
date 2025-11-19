@@ -6,7 +6,7 @@
 .badge-sm { background: white; border-radius: 8px; padding: 5px 7px; color: #000; font-weight: bold; font-size: 9px; white-space: nowrap; }
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-.dest-text { line-height: 1.2; }
+.dest-text { line-height: .7; font-size: 2em; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -25,9 +25,16 @@
 {% assign route_filter = route_filter | default: "" %}
 
 <div class="layout layout--col gap--xsmall">
-  {% assign bus_count = 0 %}
   {% assign bt_response = bustime-response %}
   {% assign predictions = bt_response.prd %}
+
+  {% if predictions and predictions.size > 0 %}
+    <div class="title_bar">
+      <span class="title">{{ predictions[0].stpnm }}</span>
+    </div>
+  {% endif %}
+
+  {% assign bus_count = 0 %}
 
   {% if predictions %}
     {% for pred in predictions limit:4 %}

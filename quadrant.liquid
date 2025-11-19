@@ -6,7 +6,7 @@
 .badge-md { background: white; border-radius: 10px; padding: 8px 10px; color: #000; font-weight: bold; font-size: 11px; white-space: nowrap; }
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.dest-text { line-height: 1.2; }
+.dest-text { line-height: .7; font-size: 2em; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -25,10 +25,17 @@
 {% assign route_filter = route_filter | default: "" %}
 
 <div class="layout layout--col gap--small">
+  {% assign bt_response = bustime-response %}
+  {% assign predictions = bt_response.prd %}
+
+  {% if predictions and predictions.size > 0 %}
+    <div class="title_bar">
+      <span class="title">{{ predictions[0].stpnm }}</span>
+    </div>
+  {% endif %}
+
   <div class="grid grid--cols-2 gap--small">
     {% assign bus_count = 0 %}
-    {% assign bt_response = bustime-response %}
-    {% assign predictions = bt_response.prd %}
 
     {% if predictions %}
       {% for pred in predictions limit:2 %}
@@ -68,7 +75,7 @@
                 {% endif %}
 
                 {% if badge_visibility_str contains "wheelchair" %}
-                  <span class="label label--small label--inverted text--gray-40">♿</span>
+                  <span class="label label--small label--inverted text--gray-40">W</span>
                 {% endif %}
               </div>
             {% endunless %}
