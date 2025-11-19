@@ -22,7 +22,7 @@
   {% assign badge_visibility_str = "delay,wheelchair" %}
 {% endif %}
 
-{% assign route_filter = route_filter | default: "" %}
+{% assign route_filter = trmnl.plugin_settings.custom_fields_values.route_filter | default: "" %}
 
 <div class="layout layout--col gap--xsmall">
   {% assign bt_response = bustime-response %}
