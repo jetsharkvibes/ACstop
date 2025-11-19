@@ -1,11 +1,14 @@
 <style>
 .card { border-radius: 12px; padding: 16px; }
-.time-display { line-height: 1.0; }
+.time-display { line-height: 1.0; font-size: 2.6em; }
 .divider-subtle { border-color: rgba(255,255,255,0.06); }
 .divider-footer { border-color: rgba(255,255,255,0.09); }
 .spacing-xs { margin-top: 4px; }
 .badge-row { display: flex; gap: 3px; flex-wrap: nowrap; }
 .badge-on { background: white; border-radius: 12px; padding: 10px; color: #000; font-weight: bold; font-size: 12px; white-space: nowrap; }
+.card-content { display: flex; flex-direction: column; gap: 4px; }
+.route-dest-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.dest-text { line-height: 1.2; }
 </style>
 
 {% comment %} AC Transit API Response Structure:
@@ -54,13 +57,13 @@
         {% endif %}
 
         <div class="item bg--black card">
-          <div class="content" style="display: flex; flex-direction: column; gap: 4px;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px;">
+          <div class="content card-content">
+            <div class="route-dest-row">
               <div class="value value--medium text--gray-60">{{ pred.rt }}</div>
-              <div class="label label--small text--gray-50" style="line-height: 1.2;">{{ pred.des }}</div>
+              <div class="label label--small text--gray-50 dest-text">{{ pred.des }}</div>
             </div>
 
-            <div class="value value--large text--white time-display" style="font-size: 2.6em;">
+            <div class="value value--large text--white time-display">
               {% if pred.prdtm %}
                 {{ pred.prdtm | date: "%-I:%M %p" }}
               {% else %}

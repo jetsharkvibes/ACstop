@@ -4,6 +4,9 @@
 .divider-subtle { border-color: rgba(255,255,255,0.06); }
 .badge-row { display: flex; gap: 3px; flex-wrap: nowrap; }
 .badge-md { background: white; border-radius: 10px; padding: 8px 10px; color: #000; font-weight: bold; font-size: 11px; white-space: nowrap; }
+.card-content { display: flex; flex-direction: column; gap: 4px; }
+.route-dest-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.dest-text { line-height: 1.2; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -38,10 +41,10 @@
         {% endif %}
 
         <div class="item bg--black card-quad">
-          <div class="content" style="display: flex; flex-direction: column; gap: 4px;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px;">
+          <div class="content card-content">
+            <div class="route-dest-row">
               <div class="value value--medium text--gray-60">{{ pred.rt }}</div>
-              <div class="label label--small text--gray-50" style="line-height: 1.2;">{{ pred.des }}</div>
+              <div class="label label--small text--gray-50 dest-text">{{ pred.des }}</div>
             </div>
 
             <div class="value value--large text--white time-quad">
