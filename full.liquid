@@ -53,7 +53,7 @@
     {% assign bus_count = 0 %}
 
     {% if predictions %}
-      {% for pred in predictions limit:6 %}
+      {% for pred in predictions %}
         {% comment %} Apply route filter if specified {% endcomment %}
         {% if route_filter and route_filter != "" %}
           {% assign filter_string = "," | append: route_filter | append: "," %}
@@ -61,6 +61,11 @@
           {% unless filter_string contains search_string %}
             {% continue %}
           {% endunless %}
+        {% endif %}
+
+        {% comment %} Limit display to 6 buses after filtering {% endcomment %}
+        {% if bus_count >= 6 %}
+          {% break %}
         {% endif %}
 
         <div class="item bg--black card">
