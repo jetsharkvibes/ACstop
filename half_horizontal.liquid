@@ -4,6 +4,9 @@
 .divider-subtle { border-color: rgba(255,255,255,0.06); }
 .badge-row { display: flex; gap: 2px; flex-wrap: nowrap; }
 .badge-sm { background: white; border-radius: 8px; padding: 6px 8px; color: #000; font-weight: bold; font-size: 10px; white-space: nowrap; }
+.card-content { display: flex; flex-direction: column; gap: 4px; }
+.route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.dest-text { line-height: 1; font-size: 1.25em; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -19,15 +22,23 @@
   {% assign badge_visibility_str = "delay,wheelchair" %}
 {% endif %}
 
-{% assign route_filter = route_filter | default: "" %}
+{% assign route_filter = trmnl.plugin_settings.custom_fields_values.route_filter | default: "" %}
+
+{% assign bt_response = bustime-response %}
+{% assign predictions = bt_response.prd %}
+
+{% if predictions and predictions.size > 0 %}
+  <div class="title_bar">
+    <span class="title">{{ predictions[0].stpnm }}</span>
+  </div>
+{% endif %}
 
 <div class="layout layout--col gap--small">
   <div class="grid grid--cols-4 gap--small">
     {% assign bus_count = 0 %}
-    {% assign predictions = root.bustime-response.prd %}
 
     {% if predictions %}
-      {% for pred in predictions limit:4 %}
+      {% for pred in predictions %}
         {% if route_filter and route_filter != "" %}
           {% assign filter_string = "," | append: route_filter | append: "," %}
           {% assign search_string = "," | append: pred.rt | append: "," %}
@@ -36,28 +47,24 @@
           {% endunless %}
         {% endif %}
 
+        {% comment %} Limit display to 4 buses after filtering {% endcomment %}
+        {% if bus_count >= 4 %}
+          {% break %}
+        {% endif %}
+
         <div class="item bg--black card-compact">
-          <div class="content layout--col gap--small">
-            <div class="value value--medium text--gray-60" style="letter-spacing: 0.3px;">
-              {{ pred.rt }}
+          <div class="content card-content">
+            <div class="route-dest-row">
+              <div class="value value--small text--gray-60">{{ pred.rt }}</div>
+              <div class="label label--xsmall text--gray-50 dest-text" data-clamp="2">{{ pred.des }}</div>
             </div>
 
             <div class="value value--large text--white time-compact">
-              {% if pred.prdctdn %}
-                {% if pred.prdctdn == "DUE" or pred.prdctdn == "0" %}
-                  Now
-                {% elsif pred.prdctdn contains "DLY" %}
-                  DLY
-                {% else %}
-                  {{ pred.prdctdn }}m
-                {% endif %}
+              {% if pred.prdtm %}
+                {{ pred.prdtm | date: "%-I:%M %p" }}
               {% else %}
                 --
               {% endif %}
-            </div>
-
-            <div class="label label--xsmall text--gray-50">
-              {{ pred.des | truncate: 15 }}
             </div>
 
             <div class="divider divider-subtle"></div>
