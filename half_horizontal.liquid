@@ -38,10 +38,10 @@
         {% endif %}
 
         <div class="item bg--black card-compact">
-          <div class="content layout--col" style="gap: 6px;">
-            <div class="layout layout--row gap--small" style="justify-content: space-between; align-items: baseline;">
+          <div class="content" style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 6px;">
               <div class="value value--small text--gray-60">{{ pred.rt }}</div>
-              <div class="label label--xsmall text--gray-50">{{ pred.des }}</div>
+              <div class="label label--xsmall text--gray-50" style="line-height: 1.2;">{{ pred.des }}</div>
             </div>
 
             <div class="value value--large text--white time-compact">
