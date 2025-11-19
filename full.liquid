@@ -31,19 +31,19 @@
 {% comment %} Get route filter if specified {% endcomment %}
 {% assign route_filter = trmnl.plugin_settings.custom_fields_values.route_filter | default: "" %}
 
+{% assign bt_response = bustime-response %}
+{% assign predictions = bt_response.prd %}
+
+{% if predictions and predictions.size > 0 %}
+  <div class="title_bar">
+    <span class="title">{{ predictions[0].stpnm }}</span>
+  </div>
+{% endif %}
+
 <div class="layout layout--col gap--small">
-  {% assign bt_response = bustime-response %}
-  {% assign predictions = bt_response.prd %}
-
-  {% if predictions and predictions.size > 0 %}
-    <div class="title_bar">
-      <span class="title">{{ predictions[0].stpnm }}</span>
-    </div>
-  {% endif %}
-
   <div class="header">
     {% if route_filter and route_filter != "" %}
-      <div class="label label--small text--gray-60 spacing-xs">
+      <div class="label label--small label--inverted spacing-xs">
         Routes: {{ route_filter }}
       </div>
     {% endif %}

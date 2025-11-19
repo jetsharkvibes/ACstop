@@ -24,16 +24,16 @@
 
 {% assign route_filter = trmnl.plugin_settings.custom_fields_values.route_filter | default: "" %}
 
+{% assign bt_response = bustime-response %}
+{% assign predictions = bt_response.prd %}
+
+{% if predictions and predictions.size > 0 %}
+  <div class="title_bar">
+    <span class="title">{{ predictions[0].stpnm }}</span>
+  </div>
+{% endif %}
+
 <div class="layout layout--col gap--xsmall">
-  {% assign bt_response = bustime-response %}
-  {% assign predictions = bt_response.prd %}
-
-  {% if predictions and predictions.size > 0 %}
-    <div class="title_bar">
-      <span class="title">{{ predictions[0].stpnm }}</span>
-    </div>
-  {% endif %}
-
   {% assign bus_count = 0 %}
 
   {% if predictions %}
