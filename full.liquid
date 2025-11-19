@@ -35,17 +35,6 @@
         Routes: {{ route_filter }}
       </div>
     {% endif %}
-
-    {% comment %} DEBUG SECTION {% endcomment %}
-    {% assign bt_response = bustime-response %}
-    <div class="label label--small text--gray-40" style="background: #222; padding: 8px; border-radius: 4px; margin: 8px 0; font-family: monospace;">
-      DEBUG INFO:<br>
-      bustime-response exists: {% if bustime-response %}YES{% else %}NO{% endif %}<br>
-      bt_response.prd exists: {% if bt_response.prd %}YES{% else %}NO{% endif %}<br>
-      bt_response.prd size: {{ bt_response.prd | size }}<br>
-      First route: {{ bt_response.prd[0].rt }}<br>
-      predictions size: {{ predictions | size }}
-    </div>
   </div>
 
   <div class="grid grid--cols-3 gap--small">
@@ -66,30 +55,16 @@
 
         <div class="item bg--black card">
           <div class="content layout--col gap--small">
-            <div class="value value--large text--gray-60" style="letter-spacing: 0.4px;">
-              {{ pred.rt }}
+            <div class="value value--medium text--gray-60">
+              {{ pred.rt }} {{ pred.des | truncate: 18 }}
             </div>
 
             <div class="value value--large text--white time-display" style="font-size: 2.6em;">
-              {% comment %} Convert predicted time format: YYYYMMDD HH:MM to display time {% endcomment %}
-              {% if pred.prdctdn %}
-                {% if pred.prdctdn == "DUE" or pred.prdctdn == "0" %}
-                  Now
-                {% elsif pred.prdctdn contains "DLY" %}
-                  Delayed
-                {% else %}
-                  {{ pred.prdctdn }} min
-                {% endif %}
-              {% elsif pred.prdtm %}
-                {% comment %} Parse prediction time if available {% endcomment %}
+              {% if pred.prdtm %}
                 {{ pred.prdtm | date: "%-I:%M %p" }}
               {% else %}
                 --
               {% endif %}
-            </div>
-
-            <div class="label label--small text--gray-50">
-              {{ pred.des | truncate: 20 }}
             </div>
 
             <div class="divider divider-subtle"></div>
@@ -120,18 +95,6 @@
         <div class="content layout--col gap--small">
           <div class="value value--xlarge text--white">⚠️</div>
           <div class="label label--small text--gray-40">No buses available</div>
-          <div class="label label--xsmall text--gray-50" style="margin-top: 8px;">
-            Final bus_count: {{ bus_count }}
-          </div>
-        </div>
-      </div>
-    {% endif %}
-
-    {% comment %} DEBUG: Show first prediction if available {% endcomment %}
-    {% if predictions %}
-      <div class="item bg--black card" style="grid-column: 1 / -1;">
-        <div class="label label--xsmall text--gray-40" style="font-family: monospace;">
-          First pred: {{ predictions[0] | json }}
         </div>
       </div>
     {% endif %}
