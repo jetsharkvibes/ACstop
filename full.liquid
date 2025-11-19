@@ -37,19 +37,21 @@
     {% endif %}
 
     {% comment %} DEBUG SECTION {% endcomment %}
+    {% assign bt_response = bustime-response %}
     <div class="label label--small text--gray-40" style="background: #222; padding: 8px; border-radius: 4px; margin: 8px 0; font-family: monospace;">
       DEBUG INFO:<br>
-      prd exists: {% if prd %}YES{% else %}NO{% endif %}<br>
-      prd size: {{ prd | size }}<br>
       bustime-response exists: {% if bustime-response %}YES{% else %}NO{% endif %}<br>
-      First prd item: {{ prd[0].rt }}<br>
-      prd data: {{ prd | json }}
+      bt_response.prd exists: {% if bt_response.prd %}YES{% else %}NO{% endif %}<br>
+      bt_response.prd size: {{ bt_response.prd | size }}<br>
+      First route: {{ bt_response.prd[0].rt }}<br>
+      predictions size: {{ predictions | size }}
     </div>
   </div>
 
   <div class="grid grid--cols-3 gap--small">
     {% assign bus_count = 0 %}
-    {% assign predictions = prd %}
+    {% assign bt_response = bustime-response %}
+    {% assign predictions = bt_response.prd %}
 
     {% if predictions %}
       {% for pred in predictions limit:6 %}

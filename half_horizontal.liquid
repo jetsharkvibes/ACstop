@@ -29,7 +29,8 @@
 
   <div class="grid grid--cols-4 gap--small">
     {% assign bus_count = 0 %}
-    {% assign predictions = prd %}
+    {% assign bt_response = bustime-response %}
+    {% assign predictions = bt_response.prd %}
 
     {% if predictions %}
       {% for pred in predictions limit:4 %}
