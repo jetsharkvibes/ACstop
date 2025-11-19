@@ -24,7 +24,7 @@
 <div class="layout layout--col gap--small">
   <div class="grid grid--cols-4 gap--small">
     {% assign bus_count = 0 %}
-    {% assign predictions = root['bustime-response']['prd'] %}
+    {% assign predictions = root.prd %}
 
     {% if predictions %}
       {% for pred in predictions limit:4 %}
