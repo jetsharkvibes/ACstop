@@ -55,8 +55,9 @@
 
         <div class="item bg--black card">
           <div class="content layout--col gap--small">
-            <div class="value value--medium text--gray-60">
-              {{ pred.rt }} {{ pred.des | truncate: 18 }}
+            <div class="layout layout--row gap--small" style="justify-content: space-between; align-items: baseline;">
+              <div class="value value--medium text--gray-60">{{ pred.rt }}</div>
+              <div class="label label--small text--gray-50">{{ pred.des }}</div>
             </div>
 
             <div class="value value--large text--white time-display" style="font-size: 2.6em;">

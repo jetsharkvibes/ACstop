@@ -38,18 +38,17 @@
 
       <div class="item bg--black card-vertical">
         <div class="content layout--col gap--xsmall">
-          <div class="layout layout--row gap--small" style="justify-content: space-between; align-items: center;">
-            <div class="value value--small text--gray-60">
-              {{ pred.rt }} {{ pred.des | truncate: 12 }}
-            </div>
+          <div class="layout layout--row gap--small" style="justify-content: space-between; align-items: baseline;">
+            <div class="value value--small text--gray-60">{{ pred.rt }}</div>
+            <div class="label label--xsmall text--gray-50">{{ pred.des }}</div>
+          </div>
 
-            <div class="value value--medium text--white time-vertical">
-              {% if pred.prdtm %}
-                {{ pred.prdtm | date: "%-I:%M %p" }}
-              {% else %}
-                --
-              {% endif %}
-            </div>
+          <div class="value value--medium text--white time-vertical">
+            {% if pred.prdtm %}
+              {{ pred.prdtm | date: "%-I:%M %p" }}
+            {% else %}
+              --
+            {% endif %}
           </div>
 
           {% unless badge_visibility_str contains "no_badges" %}
