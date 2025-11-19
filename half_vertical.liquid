@@ -23,7 +23,7 @@
 
 <div class="layout layout--col gap--xsmall">
   {% assign bus_count = 0 %}
-  {% assign predictions = root.bustime-response.prd %}
+  {% assign predictions = root['bustime-response']['prd'] %}
 
   {% if predictions %}
     {% for pred in predictions limit:4 %}
