@@ -1,0 +1,93 @@
+<style>
+.card-compact { border-radius: 10px; padding: 12px; }
+.time-compact { line-height: 1.0; font-size: 1.8em; }
+.divider-subtle { border-color: rgba(255,255,255,0.06); }
+.badge-row { display: flex; gap: 2px; flex-wrap: nowrap; }
+.badge-sm { background: white; border-radius: 8px; padding: 6px 8px; color: #000; font-weight: bold; font-size: 10px; white-space: nowrap; }
+</style>
+
+{% comment %} AC Transit API Response Structure {% endcomment %}
+
+{% assign pst_offset = 3600 | times: -8 %}
+{% assign now_utc = "now" | date: "%s" %}
+{% assign now_pst = now_utc | plus: pst_offset %}
+
+{% assign badge_visibility_raw = trmnl.plugin_settings.custom_fields_values.badge_visibility %}
+{% if badge_visibility_raw %}
+  {% assign badge_visibility_str = badge_visibility_raw | join: "," %}
+{% else %}
+  {% assign badge_visibility_str = "delay,wheelchair" %}
+{% endif %}
+
+{% assign route_filter = route_filter | default: "" %}
+
+<div class="layout layout--col gap--small">
+  <div class="grid grid--cols-4 gap--small">
+    {% assign bus_count = 0 %}
+    {% assign predictions = root.bustime-response.prd %}
+
+    {% if predictions %}
+      {% for pred in predictions limit:4 %}
+        {% if route_filter and route_filter != "" %}
+          {% assign filter_string = "," | append: route_filter | append: "," %}
+          {% assign search_string = "," | append: pred.rt | append: "," %}
+          {% unless filter_string contains search_string %}
+            {% continue %}
+          {% endunless %}
+        {% endif %}
+
+        <div class="item bg--black card-compact">
+          <div class="content layout--col gap--small">
+            <div class="value value--medium text--gray-60" style="letter-spacing: 0.3px;">
+              {{ pred.rt }}
+            </div>
+
+            <div class="value value--large text--white time-compact">
+              {% if pred.prdctdn %}
+                {% if pred.prdctdn == "DUE" or pred.prdctdn == "0" %}
+                  Now
+                {% elsif pred.prdctdn contains "DLY" %}
+                  DLY
+                {% else %}
+                  {{ pred.prdctdn }}m
+                {% endif %}
+              {% else %}
+                --
+              {% endif %}
+            </div>
+
+            <div class="label label--xsmall text--gray-50">
+              {{ pred.des | truncate: 15 }}
+            </div>
+
+            <div class="divider divider-subtle"></div>
+
+            {% unless badge_visibility_str contains "no_badges" %}
+              <div class="badge-row">
+                {% if badge_visibility_str contains "delay" %}
+                  {% if pred.dly == "true" %}
+                    <div class="badge-sm">DLY</div>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endunless %}
+          </div>
+        </div>
+        {% assign bus_count = bus_count | plus: 1 %}
+      {% endfor %}
+    {% endif %}
+
+    {% if bus_count == 0 %}
+      <div class="item bg--black card-compact" style="grid-column: 1 / -1;">
+        <div class="content layout--col gap--small">
+          <div class="value value--large text--white">⚠️</div>
+          <div class="label label--xsmall text--gray-40">No buses</div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="footer">
+    <div class="label label--xsmall text--gray-50">AC Transit</div>
+  </div>
+</div>

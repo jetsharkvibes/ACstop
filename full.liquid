@@ -1,0 +1,123 @@
+<style>
+.card { border-radius: 12px; padding: 16px; }
+.time-display { line-height: 1.0; }
+.divider-subtle { border-color: rgba(255,255,255,0.06); }
+.divider-footer { border-color: rgba(255,255,255,0.09); }
+.spacing-xs { margin-top: 4px; }
+.badge-row { display: flex; gap: 3px; flex-wrap: nowrap; }
+.badge-on { background: white; border-radius: 12px; padding: 10px; color: #000; font-weight: bold; font-size: 12px; white-space: nowrap; }
+</style>
+
+{% comment %} AC Transit API Response Structure:
+- bustime-response.prd[] array of predictions
+- Each prediction has: rt (route), des (destination), prdtm (predicted time), vid (vehicle), dly (delay flag)
+{% endcomment %}
+
+{% assign pst_offset = 3600 | times: -8 %}
+{% assign now_utc = "now" | date: "%s" %}
+{% assign now_pst = now_utc | plus: pst_offset %}
+
+{% comment %} Convert badge_visibility array to string {% endcomment %}
+{% assign badge_visibility_raw = trmnl.plugin_settings.custom_fields_values.badge_visibility %}
+{% if badge_visibility_raw %}
+  {% assign badge_visibility_str = badge_visibility_raw | join: "," %}
+{% else %}
+  {% assign badge_visibility_str = "delay,wheelchair" %}
+{% endif %}
+
+{% comment %} Get route filter if specified {% endcomment %}
+{% assign route_filter = route_filter | default: "" %}
+
+<div class="layout layout--col gap--small">
+  <div class="header">
+    {% if route_filter and route_filter != "" %}
+      <div class="label label--small text--gray-60 spacing-xs">
+        Routes: {{ route_filter }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="grid grid--cols-3 gap--small">
+    {% assign bus_count = 0 %}
+    {% assign predictions = root.bustime-response.prd %}
+
+    {% if predictions %}
+      {% for pred in predictions limit:6 %}
+        {% comment %} Apply route filter if specified {% endcomment %}
+        {% if route_filter and route_filter != "" %}
+          {% assign filter_string = "," | append: route_filter | append: "," %}
+          {% assign search_string = "," | append: pred.rt | append: "," %}
+          {% unless filter_string contains search_string %}
+            {% continue %}
+          {% endunless %}
+        {% endif %}
+
+        <div class="item bg--black card">
+          <div class="content layout--col gap--small">
+            <div class="value value--large text--gray-60" style="letter-spacing: 0.4px;">
+              {{ pred.rt }}
+            </div>
+
+            <div class="value value--large text--white time-display" style="font-size: 2.6em;">
+              {% comment %} Convert predicted time format: YYYYMMDD HH:MM to display time {% endcomment %}
+              {% if pred.prdctdn %}
+                {% if pred.prdctdn == "DUE" or pred.prdctdn == "0" %}
+                  Now
+                {% elsif pred.prdctdn contains "DLY" %}
+                  Delayed
+                {% else %}
+                  {{ pred.prdctdn }} min
+                {% endif %}
+              {% elsif pred.prdtm %}
+                {% comment %} Parse prediction time if available {% endcomment %}
+                {{ pred.prdtm | date: "%-I:%M %p" }}
+              {% else %}
+                --
+              {% endif %}
+            </div>
+
+            <div class="label label--small text--gray-50">
+              {{ pred.des | truncate: 20 }}
+            </div>
+
+            <div class="divider divider-subtle"></div>
+
+            {% unless badge_visibility_str contains "no_badges" %}
+              <div class="badge-row">
+                {% if badge_visibility_str contains "delay" %}
+                  {% if pred.dly == "true" %}
+                    <div class="badge-on">DELAY</div>
+                  {% else %}
+                    <span class="label label--small label--inverted text--gray-40">DELAY</span>
+                  {% endif %}
+                {% endif %}
+
+                {% if badge_visibility_str contains "wheelchair" %}
+                  <span class="label label--small label--inverted text--gray-40">♿</span>
+                {% endif %}
+              </div>
+            {% endunless %}
+          </div>
+        </div>
+        {% assign bus_count = bus_count | plus: 1 %}
+      {% endfor %}
+    {% endif %}
+
+    {% if bus_count == 0 %}
+      <div class="item bg--black card" style="grid-column: 1 / -1;">
+        <div class="content layout--col gap--small">
+          <div class="value value--xlarge text--white">⚠️</div>
+          <div class="label label--small text--gray-40">No buses available</div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="footer">
+    <div class="divider divider-footer"></div>
+    <div class="label label--small text--gray-50">AC Transit</div>
+    {% if last_updated %}
+      <div class="label label--small text--gray-60">Updated {{ last_updated }}</div>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,39 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: "https://api.actransit.org/transit/actrealtime/prediction?stpid={{ ac_stop_id }}&token={{ ac_api_token }}"
+polling_headers: ''
+polling_body: ''
+id: 180254
+custom_fields:
+- keyname: ac_stop_id
+  field_type: text
+  name: AC Transit Stop ID
+  description: Enter your AC Transit stop ID (e.g., 51234)
+  required: true
+- keyname: ac_api_token
+  field_type: text
+  name: AC Transit API Token
+  description: Your API token from https://api.actransit.org
+  required: true
+- keyname: route_filter
+  field_type: text
+  name: Route Filter (Optional)
+  description: Comma-separated route numbers to filter (e.g., "6,51,800"). Leave blank for all routes.
+  required: false
+  default: ''
+- keyname: badge_visibility
+  field_type: select
+  name: Badge Visibility
+  multiple: true
+  required: false
+  options:
+  - delay
+  - wheelchair
+  - no_badges
+  default: delay,wheelchair
+name: ACstop
+refresh_interval: 60
