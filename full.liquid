@@ -39,17 +39,17 @@
     {% comment %} DEBUG SECTION {% endcomment %}
     <div class="label label--small text--gray-40" style="background: #222; padding: 8px; border-radius: 4px; margin: 8px 0; font-family: monospace;">
       DEBUG INFO:<br>
-      root.prd exists: {% if root.prd %}YES{% else %}NO{% endif %}<br>
-      root.prd size: {{ root.prd | size }}<br>
-      predictions exists: {% if predictions %}YES{% else %}NO{% endif %}<br>
-      bus_count: {{ bus_count }}<br>
-      root keys: {{ root | json }}
+      prd exists: {% if prd %}YES{% else %}NO{% endif %}<br>
+      prd size: {{ prd | size }}<br>
+      bustime-response exists: {% if bustime-response %}YES{% else %}NO{% endif %}<br>
+      First prd item: {{ prd[0].rt }}<br>
+      prd data: {{ prd | json }}
     </div>
   </div>
 
   <div class="grid grid--cols-3 gap--small">
     {% assign bus_count = 0 %}
-    {% assign predictions = root.prd %}
+    {% assign predictions = prd %}
 
     {% if predictions %}
       {% for pred in predictions limit:6 %}
