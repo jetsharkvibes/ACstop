@@ -1,12 +1,12 @@
 <style>
-.card-quad { border-radius: 10px; padding: 14px; }
-.time-quad { line-height: 1.0; font-size: 1.9em; }
-.divider-subtle { border-color: rgba(255,255,255,0.06); }
-.badge-row { display: flex; gap: 3px; flex-wrap: nowrap; }
-.badge-md { background: white; border-radius: 10px; padding: 8px 10px; color: #000; font-weight: bold; font-size: 11px; white-space: nowrap; }
+.card-quad { border-radius: 10px; padding: 5px; }
+.time-quad { line-height: 1.0; font-size: 1.25em; }
 .card-content { display: flex; flex-direction: column; gap: 4px; }
-.route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 5px; }
 .dest-text { line-height: .7; font-size: 1.8em; }
+.times-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.time-card { background: white; border-radius: 8px; padding: 3px 3px; color: #000; }
+.time-vertical { line-height: 1.0; font-size: 1.6em; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -14,13 +14,6 @@
 {% assign pst_offset = 3600 | times: -8 %}
 {% assign now_utc = "now" | date: "%s" %}
 {% assign now_pst = now_utc | plus: pst_offset %}
-
-{% assign badge_visibility_raw = trmnl.plugin_settings.custom_fields_values.badge_visibility %}
-{% if badge_visibility_raw %}
-  {% assign badge_visibility_str = badge_visibility_raw | join: "," %}
-{% else %}
-  {% assign badge_visibility_str = "delay,wheelchair" %}
-{% endif %}
 
 {% assign route_filter = trmnl.plugin_settings.custom_fields_values.route_filter | default: "" %}
 
@@ -34,23 +27,31 @@
 {% endif %}
 
 <div class="layout layout--col gap--small">
-  <div class="grid grid--cols-2 gap--small">
-    {% assign bus_count = 0 %}
+  {% assign seen_combos = "" %}
+  {% assign card_count = 0 %}
 
-    {% if predictions %}
-      {% for pred in predictions %}
-        {% if route_filter and route_filter != "" %}
-          {% assign filter_string = "," | append: route_filter | append: "," %}
-          {% assign search_string = "," | append: pred.rt | append: "," %}
-          {% unless filter_string contains search_string %}
-            {% continue %}
-          {% endunless %}
-        {% endif %}
+  {% if predictions %}
+    {% for pred in predictions %}
+      {% if route_filter and route_filter != "" %}
+        {% assign filter_string = "," | append: route_filter | append: "," %}
+        {% assign search_string = "," | append: pred.rt | append: "," %}
+        {% unless filter_string contains search_string %}
+          {% continue %}
+        {% endunless %}
+      {% endif %}
 
-        {% comment %} Limit display to 2 buses after filtering {% endcomment %}
-        {% if bus_count >= 2 %}
+      {% comment %} Create unique key for route + destination {% endcomment %}
+      {% assign combo_key = pred.rt | append: "|" | append: pred.des %}
+
+      {% comment %} Check if we've already seen this combo {% endcomment %}
+      {% unless seen_combos contains combo_key %}
+        {% comment %} Limit to 2 unique cards {% endcomment %}
+        {% if card_count >= 2 %}
           {% break %}
         {% endif %}
+
+        {% comment %} Mark this combo as seen {% endcomment %}
+        {% assign seen_combos = seen_combos | append: "||" | append: combo_key %}
 
         <div class="item bg--black card-quad">
           <div class="content card-content">
@@ -59,48 +60,47 @@
               <div class="label label--small text--gray-50 dest-text" data-clamp="2">{{ pred.des }}</div>
             </div>
 
-            <div class="value value--large text--white time-quad">
-              {% if pred.prdtm %}
-                {{ pred.prdtm | date: "%-I:%M %p" }}
-              {% else %}
-                --
-              {% endif %}
-            </div>
+            <div class="times-row">
+              {% assign time_count = 0 %}
+              {% comment %} Collect up to 3 times for this route+dest combo {% endcomment %}
+              {% for time_pred in predictions %}
+                {% if route_filter and route_filter != "" %}
+                  {% assign filter_string = "," | append: route_filter | append: "," %}
+                  {% assign search_string = "," | append: time_pred.rt | append: "," %}
+                  {% unless filter_string contains search_string %}
+                    {% continue %}
+                  {% endunless %}
+                {% endif %}
 
-            <div class="divider divider-subtle"></div>
-
-            {% unless badge_visibility_str contains "no_badges" %}
-              <div class="badge-row">
-                {% if badge_visibility_str contains "delay" %}
-                  {% if pred.dly == "true" %}
-                    <div class="badge-md">DELAY</div>
-                  {% else %}
-                    <span class="label label--small label--inverted text--gray-40">DELAY</span>
+                {% if time_pred.rt == pred.rt and time_pred.des == pred.des %}
+                  {% if time_count < 3 %}
+                   <div class="time-card">
+                    <div class="value value--medium time-vertical">
+                      {% if time_pred.prdtm %}
+                        {{ time_pred.prdtm | date: "%-I:%M %p" }}
+                      {% else %}
+                        --
+                      {% endif %}
+                    </div>
+                     </div>
+                    {% assign time_count = time_count | plus: 1 %}
                   {% endif %}
                 {% endif %}
-
-                {% if badge_visibility_str contains "wheelchair" %}
-                  <span class="label label--small label--inverted text--gray-40">W</span>
-                {% endif %}
-              </div>
-            {% endunless %}
+              {% endfor %}
+            </div>
           </div>
         </div>
-        {% assign bus_count = bus_count | plus: 1 %}
-      {% endfor %}
-    {% endif %}
+        {% assign card_count = card_count | plus: 1 %}
+      {% endunless %}
+    {% endfor %}
+  {% endif %}
 
-    {% if bus_count == 0 %}
-      <div class="item bg--black card-quad" style="grid-column: 1 / -1;">
-        <div class="content layout--col gap--small">
-          <div class="value value--xlarge text--white">⚠️</div>
-          <div class="label label--small text--gray-40">No buses</div>
-        </div>
+  {% if card_count == 0 %}
+    <div class="item bg--black card-quad">
+      <div class="content layout--col gap--small">
+        <div class="value value--xlarge text--white">⚠️</div>
+        <div class="label label--small text--gray-40">No buses</div>
       </div>
-    {% endif %}
-  </div>
-
-  <div class="footer">
-    <div class="label label--small text--gray-50">AC Transit</div>
-  </div>
+    </div>
+  {% endif %}
 </div>
