@@ -1,9 +1,6 @@
 <style>
 .card-compact { border-radius: 10px; padding: 12px; }
 .time-compact { line-height: 1.0; font-size: 1.8em; }
-.divider-subtle { border-color: rgba(255,255,255,0.06); }
-.badge-row { display: flex; gap: 2px; flex-wrap: nowrap; }
-.badge-sm { background: white; border-radius: 8px; padding: 6px 8px; color: #000; font-weight: bold; font-size: 10px; white-space: nowrap; }
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
 .dest-text { line-height: 1; font-size: 1.25em; }
@@ -14,13 +11,6 @@
 {% assign pst_offset = 3600 | times: -8 %}
 {% assign now_utc = "now" | date: "%s" %}
 {% assign now_pst = now_utc | plus: pst_offset %}
-
-{% assign badge_visibility_raw = trmnl.plugin_settings.custom_fields_values.badge_visibility %}
-{% if badge_visibility_raw %}
-  {% assign badge_visibility_str = badge_visibility_raw | join: "," %}
-{% else %}
-  {% assign badge_visibility_str = "delay,wheelchair" %}
-{% endif %}
 
 {% assign route_filter = trmnl.plugin_settings.custom_fields_values.route_filter | default: "" %}
 
@@ -61,23 +51,11 @@
 
             <div class="value value--large text--white time-compact">
               {% if pred.prdtm %}
-                {{ pred.prdtm | date: "%-I:%M %p" }}
+                {{ pred.prdtm | date: "%-I:%M %p" %}
               {% else %}
                 --
               {% endif %}
             </div>
-
-            <div class="divider divider-subtle"></div>
-
-            {% unless badge_visibility_str contains "no_badges" %}
-              <div class="badge-row">
-                {% if badge_visibility_str contains "delay" %}
-                  {% if pred.dly == "true" %}
-                    <div class="badge-sm">DLY</div>
-                  {% endif %}
-                {% endif %}
-              </div>
-            {% endunless %}
           </div>
         </div>
         {% assign bus_count = bus_count | plus: 1 %}
@@ -92,9 +70,5 @@
         </div>
       </div>
     {% endif %}
-  </div>
-
-  <div class="footer">
-    <div class="label label--xsmall text--gray-50">AC Transit</div>
   </div>
 </div>

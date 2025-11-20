@@ -19,16 +19,6 @@ custom_fields:
   name: AC Transit API Token
   description: Your API token from <a href="https://api.actransit.org/transit/Account/Register">AC Transit</a>.
   optional: false
-- keyname: badge_visibility
-  field_type: select
-  name: Badge Visibility
-  multiple: true
-  optional: true
-  options:
-  - delay
-  - wheelchair
-  - no_badges
-  default: delay,wheelchair
 - keyname: route_filter
   field_type: text
   name: Route Filter (Optional)
