@@ -1,14 +1,9 @@
 <style>
 .card { border-radius: 12px; padding: 16px; }
 .time-display { line-height: 1.0; font-size: 2.6em; }
-.divider-subtle { border-color: rgba(255,255,255,0.06); }
-.divider-footer { border-color: rgba(255,255,255,0.09); }
-.spacing-xs { margin-top: 4px; }
-.badge-row { display: flex; gap: 3px; flex-wrap: nowrap; }
-.badge-on { background: white; border-radius: 12px; padding: 10px; color: #000; font-weight: bold; font-size: 12px; white-space: nowrap; }
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.dest-text { line-height: .7; font-size: 2em; }
+.dest-text { line-height: .8; font-size: 2em; }
 </style>
 
 {% comment %} AC Transit API Response Structure:
@@ -19,14 +14,6 @@
 {% assign pst_offset = 3600 | times: -8 %}
 {% assign now_utc = "now" | date: "%s" %}
 {% assign now_pst = now_utc | plus: pst_offset %}
-
-{% comment %} Convert badge_visibility array to string {% endcomment %}
-{% assign badge_visibility_raw = trmnl.plugin_settings.custom_fields_values.badge_visibility %}
-{% if badge_visibility_raw %}
-  {% assign badge_visibility_str = badge_visibility_raw | join: "," %}
-{% else %}
-  {% assign badge_visibility_str = "delay,wheelchair" %}
-{% endif %}
 
 {% comment %} Get route filter if specified {% endcomment %}
 {% assign route_filter = trmnl.plugin_settings.custom_fields_values.route_filter | default: "" %}
@@ -82,24 +69,6 @@
                 --
               {% endif %}
             </div>
-
-            <div class="divider divider-subtle"></div>
-
-            {% unless badge_visibility_str contains "no_badges" %}
-              <div class="badge-row">
-                {% if badge_visibility_str contains "delay" %}
-                  {% if pred.dly == "true" %}
-                    <div class="badge-on">DELAY</div>
-                  {% else %}
-                    <span class="label label--small label--inverted text--gray-40">DELAY</span>
-                  {% endif %}
-                {% endif %}
-
-                {% if badge_visibility_str contains "wheelchair" %}
-                  <span class="label label--small label--inverted text--gray-40">W</span>
-                {% endif %}
-              </div>
-            {% endunless %}
           </div>
         </div>
         {% assign bus_count = bus_count | plus: 1 %}
@@ -113,14 +82,6 @@
           <div class="label label--small text--gray-40">No buses available</div>
         </div>
       </div>
-    {% endif %}
-  </div>
-
-  <div class="footer">
-    <div class="divider divider-footer"></div>
-    <div class="label label--small text--gray-50">AC Transit</div>
-    {% if last_updated %}
-      <div class="label label--small text--gray-60">Updated {{ last_updated }}</div>
     {% endif %}
   </div>
 </div>
