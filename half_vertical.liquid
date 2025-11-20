@@ -7,6 +7,8 @@
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
 .dest-text { line-height: 1; font-size: 1.5em; }
+.times-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.route-header { width: 100%; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -35,7 +37,9 @@
 
 <div class="layout layout--col gap--xsmall">
   {% assign bus_count = 0 %}
+  {% assign unique_trains = "" %}
 
+  {% comment %} First pass: build list of unique route+destination combinations {% endcomment %}
   {% if predictions %}
     {% for pred in predictions %}
       {% if route_filter and route_filter != "" %}
@@ -46,32 +50,68 @@
         {% endunless %}
       {% endif %}
 
-      {% comment %} Limit display to 4 buses after filtering {% endcomment %}
+      {% assign train_key = pred.rt | append: "|" | append: pred.des %}
+      {% unless unique_trains contains train_key %}
+        {% if unique_trains == "" %}
+          {% assign unique_trains = train_key %}
+        {% else %}
+          {% assign unique_trains = unique_trains | append: "||" | append: train_key %}
+        {% endif %}
+      {% endunless %}
+    {% endfor %}
+  {% endif %}
+
+  {% comment %} Second pass: display card for each unique train with all its times {% endcomment %}
+  {% if unique_trains != "" %}
+    {% assign train_array = unique_trains | split: "||" %}
+
+    {% for train_key in train_array %}
       {% if bus_count >= 4 %}
         {% break %}
       {% endif %}
 
+      {% assign train_parts = train_key | split: "|" %}
+      {% assign route = train_parts[0] %}
+      {% assign destination = train_parts[1] %}
+
       <div class="item bg--black card-vertical">
         <div class="content card-content">
-          <div class="route-dest-row">
-            <div class="value value--small text--gray-60">{{ pred.rt }}</div>
-            <div class="label label--xsmall text--gray-50 dest-text" data-clamp="2">{{ pred.des }}</div>
+          {% comment %} Route and Destination Header {% endcomment %}
+          <div class="route-header">
+            <div class="value value--small text--gray-60">{{ route }}</div>
+            <div class="label label--xsmall text--gray-50 dest-text" data-clamp="2">{{ destination }}</div>
           </div>
 
-          <div class="value value--medium text--white time-vertical">
-            {% if pred.prdtm %}
-              {{ pred.prdtm | date: "%-I:%M %p" }}
-            {% else %}
-              --
-            {% endif %}
+          {% comment %} Multiple Times Row {% endcomment %}
+          <div class="times-row">
+            {% assign time_count = 0 %}
+            {% assign has_delay = false %}
+
+            {% for pred in predictions %}
+              {% if pred.rt == route and pred.des == destination %}
+                {% if time_count < 5 %}
+                  <div class="value value--medium text--white time-vertical">
+                    {% if pred.prdtm %}
+                      {{ pred.prdtm | date: "%-I:%M %p" }}
+                    {% else %}
+                      --
+                    {% endif %}
+                  </div>
+                  {% assign time_count = time_count | plus: 1 %}
+
+                  {% if pred.dly == "true" %}
+                    {% assign has_delay = true %}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
           </div>
 
+          {% comment %} Badges {% endcomment %}
           {% unless badge_visibility_str contains "no_badges" %}
             <div class="badge-row">
-              {% if badge_visibility_str contains "delay" %}
-                {% if pred.dly == "true" %}
-                  <div class="badge-sm">DELAY</div>
-                {% endif %}
+              {% if badge_visibility_str contains "delay" and has_delay %}
+                <div class="badge-sm">DELAY</div>
               {% endif %}
             </div>
           {% endunless %}
