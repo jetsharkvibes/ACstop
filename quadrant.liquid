@@ -1,14 +1,3 @@
-<style>
-.card-quad { border-radius: 10px; padding: 5px; }
-.time-quad { line-height: 1.0; font-size: 1.2em; }
-.card-content { display: flex; flex-direction: column; gap: 4px; }
-.route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 5px; }
-.dest-text { line-height: .7; font-size: 1.8em; }
-.times-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.time-card { background: white; border-radius: 8px; padding: 3px 3px; color: #000; }
-.time-vertical { line-height: 1.0; font-size: 1.4em; }
-</style>
-
 {% comment %} AC Transit API Response Structure {% endcomment %}
 
 {% assign pst_offset = 3600 | times: -8 %}
@@ -54,14 +43,14 @@
         {% comment %} Mark this combo as seen {% endcomment %}
         {% assign seen_combos = seen_combos | append: "||" | append: combo_key %}
 
-        <div class="item bg--black card-quad">
-          <div class="content card-content">
-            <div class="route-dest-row">
+        <div class="item bg--black rounded--medium" style="padding: 5px;">
+          <div class="content layout--col gap--xsmall card-content">
+            <div class="flex flex--between flex--center-y gap--xsmall route-dest-row">
               <div class="value value--medium text--gray-60">{{ pred.rt }}</div>
               <div class="label label--small text--gray-50 dest-text" data-clamp="2">{{ pred.des }}</div>
             </div>
 
-            <div class="times-row">
+            <div class="flex gap--small flex--wrap times-row">
               {% assign time_count = 0 %}
               {% comment %} Collect up to 3 times for this route+dest combo {% endcomment %}
               {% for time_pred in predictions %}
@@ -75,7 +64,7 @@
 
                 {% if time_pred.rt == pred.rt and time_pred.des == pred.des %}
                   {% if time_count < 3 %}
-                   <div class="time-card">
+                   <div class="bg--white rounded--small text--black">
                     <div class="value value--medium time-vertical">
                       {% if time_pred.prdtm %}
                         {{ time_pred.prdtm | date: "%-I:%M %p" }}
