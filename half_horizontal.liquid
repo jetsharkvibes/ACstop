@@ -7,6 +7,7 @@
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; }
 .dest-text { line-height: .8; font-size: 1.5em; data-clamp="2"; }
+.grid-full-width { grid-column: 1 / -1; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -83,7 +84,7 @@
     {% endif %}
 
     {% if bus_count == 0 %}
-      <div class="item bg--black card-compact" style="grid-column: 1 / -1;">
+      <div class="item bg--black card-compact grid-full-width">
         <div class="content layout--col gap--small">
           <div class="value value--large text--white">⚠️</div>
           <div class="label label--xsmall text--gray-40">No buses</div>
