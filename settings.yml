@@ -25,5 +25,12 @@ custom_fields:
   optional: true
   default: ''
   description: Comma-separated route numbers to filter (e.g., "6,51,800"). Leave blank for all routes.
-name: GITstop
-refresh_interval: 1440
+- keyname: author_bio
+  field_type: author_bio
+  name: About This Plugin
+  description: Real-time AC Transit bus departures at a glance. Displays next departures for any AC Transit stop in the Bay Area.
+  github_url: https://github.com/jetsharklambo/ACstop
+  learn_more_url: https://maximo.is/jetsharklambo
+  email_address: jetsharklambo+trmnlcom@gmail.com
+name: ACTransit Stop
+refresh_interval: 30

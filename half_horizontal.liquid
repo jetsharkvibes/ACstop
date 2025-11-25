@@ -6,7 +6,7 @@
 .badge-sm { background: white; border-radius: 8px; padding: 6px 8px; color: #000; font-weight: bold; font-size: 10px; white-space: nowrap; }
 .card-content { display: flex; flex-direction: column; gap: 4px; }
 .route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; }
-.dest-text { line-height: .8; font-size: 1.5em; }
+.dest-text { line-height: .8; font-size: 1.5em; data-clamp="2"; }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -29,6 +29,7 @@
 
 {% if predictions and predictions.size > 0 %}
   <div class="title_bar">
+<img class="image" src="https://usetrmnl.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTY1MjY4MjksInB1ciI6ImJsb2JfaWQifX0=--7d8a6b9a8829deeea72429db669ea64c191946b8/noun-bus-stop-6545346.png">
     <span class="title">{{ predictions[0].stpnm }}</span>
   </div>
 {% endif %}
