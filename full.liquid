@@ -1,17 +1,4 @@
-<style>
-:root {
-  --card-round: 12px;
-  --card-space: 16px;
-  --time-text: 2.6em;
-  --dest-text: 2em;
-}
-.card { border-radius: var(--card-round); padding: var(--card-space); }
-.time-main { line-height: 1.0; font-size: var(--time-text); }
-.dest-text { line-height: .8; font-size: var(--dest-text); }
-.grid-full-width { grid-column: 1 / -1; }
-</style>
-
-{% comment %} AC Transit API Response Structure:
+{% comment %} AC Transit API Response:
 - bustime-response.prd[] array of predictions
 - Each prediction has: rt (route), des (destination), prdtm (predicted time), vid (vehicle), dly (delay flag)
 {% endcomment %}
@@ -61,14 +48,14 @@
           {% break %}
         {% endif %}
 
-        <div class="item bg--black card">
+        <div class="item bg--black rounded--large" style="padding: 16px;">
           <div class="content layout--col gap--xsmall card-content">
             <div class="flex flex--between flex--center-y gap--small route-dest-row">
               <div class="value value--medium text--gray-60">{{ pred.rt }}</div>
-              <div class="label label--small text--gray-50 dest-text" data-clamp="2">{{ pred.des }}</div>
+              <div class="label label--small text--gray-50" data-clamp="2" style="line-height: .8;">{{ pred.des }}</div>
             </div>
 
-            <div class="value value--large text--white time-main">
+            <div class="value value--large text--white" style="line-height: 1.0; font-size: 2.6em;">
               {% if pred.prdtm %}
                 {{ pred.prdtm | date: "%-I:%M %p" }}
               {% else %}
@@ -82,7 +69,7 @@
     {% endif %}
 
     {% if bus_count == 0 %}
-      <div class="item bg--black card grid-full-width">
+      <div class="item bg--black rounded--large" style="padding: 16px; grid-column: 1 / -1;">
         <div class="content layout--col gap--small">
           <div class="value value--xlarge text--white">⚠️</div>
           <div class="label label--small text--gray-40">No buses available</div>
