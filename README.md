@@ -161,6 +161,7 @@ Public Domain - feel free to modify and distribute
 - Forked from [BARTstop](https://github.com/jetsharkvibes/BARTstop)
 - AC Transit API provided by [Alameda-Contra Costa Transit District](https://www.actransit.org/)
 - Built for [TRMNL](https://usetrmnl.com/)
+- Icon by [iconsbysonny]{https://thenounproject.com/creator/iconbysonny/}
 
 ## Support
 
@@ -175,3 +176,4 @@ https://github.com/jetsharkvibes/ACstop/issues
 - Real-time bus arrivals with route indicators
 - Route filtering support
 - Store-ready optimization (≤6 inline styles per template)
+
