@@ -1,9 +1,17 @@
 <style>
-.card { border-radius: 12px; padding: 16px; }
-.time-display { line-height: 1.0; font-size: 2.6em; }
-.card-content { display: flex; flex-direction: column; gap: 4px; }
-.route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.dest-text { line-height: .8; font-size: 2em; }
+:root {
+  --card-radius: 12px;
+  --card-padding: 16px;
+  --time-size: 2.6em;
+  --dest-size: 2em;
+  --flex-display: flex;
+  --justify-between: space-between;
+}
+.card { border-radius: var(--card-radius); padding: var(--card-padding); }
+.time-display { line-height: 1.0; font-size: var(--time-size); }
+.card-content { display: var(--flex-display); flex-direction: column; gap: 4px; }
+.route-dest-row { display: var(--flex-display); justify-content: var(--justify-between); align-items: center; gap: 8px; }
+.dest-text { line-height: .8; font-size: var(--dest-size); }
 .grid-full-width { grid-column: 1 / -1; }
 </style>
 

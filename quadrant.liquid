@@ -1,12 +1,24 @@
 <style>
-.card-quad { border-radius: 10px; padding: 5px; }
-.time-quad { line-height: 1.0; font-size: 1.2em; }
-.card-content { display: flex; flex-direction: column; gap: 4px; }
-.route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 5px; }
-.dest-text { line-height: .7; font-size: 1.8em; }
-.times-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.time-card { background: white; border-radius: 8px; padding: 3px 3px; color: #000; }
-.time-vertical { line-height: 1.0; font-size: 1.4em; }
+:root {
+  --card-radius: 10px;
+  --card-padding: 5px;
+  --time-quad-size: 1.2em;
+  --dest-size: 1.8em;
+  --time-card-radius: 8px;
+  --time-card-padding: 3px 3px;
+  --time-card-color: #000;
+  --time-vertical-size: 1.4em;
+  --flex-display: flex;
+  --justify-between: space-between;
+}
+.card-quad { border-radius: var(--card-radius); padding: var(--card-padding); }
+.time-quad { line-height: 1.0; font-size: var(--time-quad-size); }
+.card-content { display: var(--flex-display); flex-direction: column; gap: 4px; }
+.route-dest-row { display: var(--flex-display); justify-content: var(--justify-between); align-items: center; gap: 5px; }
+.dest-text { line-height: .7; font-size: var(--dest-size); }
+.times-row { display: var(--flex-display); gap: 8px; flex-wrap: wrap; }
+.time-card { background: white; border-radius: var(--time-card-radius); padding: var(--time-card-padding); color: var(--time-card-color); }
+.time-vertical { line-height: 1.0; font-size: var(--time-vertical-size); }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}

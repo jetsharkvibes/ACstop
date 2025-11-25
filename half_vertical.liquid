@@ -1,14 +1,30 @@
 <style>
-.card-vertical { border-radius: 10px; padding: 10px; }
-.time-vertical { line-height: 1.0; font-size: 1.2em; }
+:root {
+  --card-radius: 10px;
+  --card-padding: 10px;
+  --time-size: 1.2em;
+  --badge-radius: 8px;
+  --badge-padding: 5px 7px;
+  --badge-color: #000;
+  --badge-font-size: 9px;
+  --dest-size: 2.2em;
+  --dest-padding: 0px;
+  --time-card-radius: 8px;
+  --time-card-padding: 3px 3px;
+  --time-card-color: #000;
+  --flex-display: flex;
+  --justify-between: space-between;
+}
+.card-vertical { border-radius: var(--card-radius); padding: var(--card-padding); }
+.time-vertical { line-height: 1.0; font-size: var(--time-size); }
 .divider-subtle { border-color: rgba(255,255,255,0.06); }
-.badge-row { display: flex; gap: 2px; flex-wrap: nowrap; }
-.badge-sm { background: white; border-radius: 8px; padding: 5px 7px; color: #000; font-weight: bold; font-size: 9px; white-space: nowrap; }
-.card-content { display: flex; flex-direction: column; gap: 4px; }
-.route-dest-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-.dest-text { line-height: 1; font-size: 2.2em; padding: 0px;}
-.times-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.time-card { background: white; border-radius: 8px; padding: 3px 3px; color: #000; }
+.badge-row { display: var(--flex-display); gap: 2px; flex-wrap: nowrap; }
+.badge-sm { background: white; border-radius: var(--badge-radius); padding: var(--badge-padding); color: var(--badge-color); font-weight: bold; font-size: var(--badge-font-size); white-space: nowrap; }
+.card-content { display: var(--flex-display); flex-direction: column; gap: 4px; }
+.route-dest-row { display: var(--flex-display); justify-content: var(--justify-between); align-items: center; gap: 6px; }
+.dest-text { line-height: 1; font-size: var(--dest-size); padding: var(--dest-padding);}
+.times-row { display: var(--flex-display); gap: 8px; flex-wrap: wrap; align-items: center; }
+.time-card { background: white; border-radius: var(--time-card-radius); padding: var(--time-card-padding); color: var(--time-card-color); }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
