@@ -8,7 +8,7 @@
   --justify-mode: space-between;
 }
 .card { border-radius: var(--card-round); padding: var(--card-space); }
-.time-display { line-height: 1.0; font-size: var(--time-text); }
+.time-main { line-height: 1.0; font-size: var(--time-text); }
 .card-content { display: var(--flex-mode); flex-direction: column; gap: 4px; }
 .route-dest-row { display: var(--flex-mode); justify-content: var(--justify-mode); align-items: center; gap: 8px; }
 .dest-text { line-height: .8; font-size: var(--dest-text); }
@@ -60,7 +60,7 @@
           {% endunless %}
         {% endif %}
 
-        {% comment %} Limit display to 6 buses after filtering {% endcomment %}
+        {% comment %} Limit to 6 buses after filtering {% endcomment %}
         {% if bus_count >= 6 %}
           {% break %}
         {% endif %}
@@ -72,7 +72,7 @@
               <div class="label label--small text--gray-50 dest-text" data-clamp="2">{{ pred.des }}</div>
             </div>
 
-            <div class="value value--large text--white time-display">
+            <div class="value value--large text--white time-main">
               {% if pred.prdtm %}
                 {{ pred.prdtm | date: "%-I:%M %p" }}
               {% else %}
