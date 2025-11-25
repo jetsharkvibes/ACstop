@@ -4,15 +4,11 @@
   --card-space: 5px;
   --time-quad: 1.2em;
   --dest-text: 1.8em;
-  --time-round: 8px;
-  --time-space: 3px 3px;
-  --time-fill: #000;
   --time-vertical: 1.4em;
 }
 .card-quad { border-radius: var(--card-round); padding: var(--card-space); }
 .time-quad { line-height: 1.0; font-size: var(--time-quad); }
 .dest-text { line-height: .7; font-size: var(--dest-text); }
-.time-card { background: white; border-radius: var(--time-round); padding: var(--time-space); color: var(--time-fill); }
 .time-vertical { line-height: 1.0; font-size: var(--time-vertical); }
 </style>
 
@@ -82,7 +78,7 @@
 
                 {% if time_pred.rt == pred.rt and time_pred.des == pred.des %}
                   {% if time_count < 3 %}
-                   <div class="time-card">
+                   <div class="bg--white rounded--small text--black" style="padding: 3px;">
                     <div class="value value--medium time-vertical">
                       {% if time_pred.prdtm %}
                         {{ time_pred.prdtm | date: "%-I:%M %p" }}

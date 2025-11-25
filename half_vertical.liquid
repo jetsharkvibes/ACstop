@@ -3,21 +3,12 @@
   --card-round: 10px;
   --card-space: 10px;
   --time-text: 1.2em;
-  --badge-round: 8px;
-  --badge-space: 5px 7px;
-  --badge-text: #000;
-  --badge-size: 9px;
   --dest-text: 2.2em;
-  --time-round: 8px;
-  --time-space: 3px 3px;
-  --time-fill: #000;
 }
 .card-vertical { border-radius: var(--card-round); padding: var(--card-space); }
 .time-vertical { line-height: 1.0; font-size: var(--time-text); }
 .divider-subtle { border-color: rgba(255,255,255,0.06); }
-.badge-sm { background: white; border-radius: var(--badge-round); padding: var(--badge-space); color: var(--badge-text); font-weight: bold; font-size: var(--badge-size); white-space: nowrap; }
 .dest-text { line-height: 1; font-size: var(--dest-text); }
-.time-card { background: white; border-radius: var(--time-round); padding: var(--time-space); color: var(--time-fill); }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
@@ -100,7 +91,7 @@
             {% for pred in predictions %}
               {% if pred.rt == route and pred.des == destination %}
                 {% if time_count < 3 %}
-                  <div class="time-card">
+                  <div class="bg--white rounded--small text--black" style="padding: 3px;">
                     <div class="value value--medium time-vertical">
                       {% if pred.prdtm %}
                         {{ pred.prdtm | date: "%-I:%M %p" }}
@@ -186,7 +177,7 @@
               {% unless badge_visibility_str contains "no_badges" %}
                 <div class="flex gap--xxsmall badge-row">
                   {% if badge_visibility_str contains "delay" and has_delay %}
-                    <div class="badge-sm">DELAY</div>
+                    <div class="bg--white rounded--small text--black label label--xsmall" style="font-weight: bold; white-space: nowrap;">DELAY</div>
                   {% endif %}
                 </div>
               {% endunless %}

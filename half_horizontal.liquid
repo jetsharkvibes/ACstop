@@ -3,16 +3,11 @@
   --card-round: 10px;
   --card-space: 12px;
   --time-text: 1.8em;
-  --badge-round: 8px;
-  --badge-space: 6px 8px;
-  --badge-text: #000;
-  --badge-size: 10px;
   --dest-text: 1.5em;
 }
 .card-compact { border-radius: var(--card-round); padding: var(--card-space); }
 .time-compact { line-height: 1.0; font-size: var(--time-text); }
 .divider-subtle { border-color: rgba(255,255,255,0.06); }
-.badge-sm { background: white; border-radius: var(--badge-round); padding: var(--badge-space); color: var(--badge-text); font-weight: bold; font-size: var(--badge-size); white-space: nowrap; }
 .dest-text { line-height: .8; font-size: var(--dest-text); data-clamp="2"; }
 .grid-full-width { grid-column: 1 / -1; }
 </style>
@@ -79,7 +74,7 @@
               <div class="flex gap--xxsmall badge-row">
                 {% if badge_visibility_str contains "delay" %}
                   {% if pred.dly == "true" %}
-                    <div class="badge-sm">DLY</div>
+                    <div class="bg--white rounded--small text--black label label--xsmall" style="font-weight: bold; padding: 6px 8px; white-space: nowrap;">DLY</div>
                   {% endif %}
                 {% endif %}
               </div>
