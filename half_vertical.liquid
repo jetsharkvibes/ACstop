@@ -78,7 +78,7 @@
             {% for pred in predictions %}
               {% if pred.rt == route and pred.des == destination %}
                 {% if time_count < 3 %}
-                  <div class="bg--white rounded--small text--black" style="padding: 3px;">
+                  <div class="bg--white rounded--small text--black">
                     <div class="value value--medium time-vertical">
                       {% if pred.prdtm %}
                         {{ pred.prdtm | date: "%-I:%M %p" }}

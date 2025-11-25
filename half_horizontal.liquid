@@ -60,7 +60,7 @@
               <div class="flex gap--xxsmall badge-row">
                 {% if badge_visibility_str contains "delay" %}
                   {% if pred.dly == "true" %}
-                    <div class="bg--white rounded--small text--black label label--xsmall" style="font-weight: bold; padding: 6px 8px; white-space: nowrap;">DLY</div>
+                    <div class="bg--white rounded--small text--black label label--xsmall" style="font-weight: bold; white-space: nowrap;">DLY</div>
                   {% endif %}
                 {% endif %}
               </div>
@@ -72,7 +72,7 @@
     {% endif %}
 
     {% if bus_count == 0 %}
-      <div class="item bg--black rounded--medium" style="padding: 12px; grid-column: 1 / -1;">
+      <div class="item bg--black rounded--medium" style="grid-column: 1 / -1;">
         <div class="content layout--col gap--small">
           <div class="value value--large text--white">⚠️</div>
           <div class="label label--xsmall text--gray-40">No buses</div>
