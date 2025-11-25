@@ -1,17 +1,17 @@
 <style>
 :root {
-  --card-radius: 12px;
-  --card-padding: 16px;
-  --time-size: 2.6em;
-  --dest-size: 2em;
-  --flex-display: flex;
-  --justify-between: space-between;
+  --card-round: 12px;
+  --card-space: 16px;
+  --time-text: 2.6em;
+  --dest-text: 2em;
+  --flex-mode: flex;
+  --justify-mode: space-between;
 }
-.card { border-radius: var(--card-radius); padding: var(--card-padding); }
-.time-display { line-height: 1.0; font-size: var(--time-size); }
-.card-content { display: var(--flex-display); flex-direction: column; gap: 4px; }
-.route-dest-row { display: var(--flex-display); justify-content: var(--justify-between); align-items: center; gap: 8px; }
-.dest-text { line-height: .8; font-size: var(--dest-size); }
+.card { border-radius: var(--card-round); padding: var(--card-space); }
+.time-display { line-height: 1.0; font-size: var(--time-text); }
+.card-content { display: var(--flex-mode); flex-direction: column; gap: 4px; }
+.route-dest-row { display: var(--flex-mode); justify-content: var(--justify-mode); align-items: center; gap: 8px; }
+.dest-text { line-height: .8; font-size: var(--dest-text); }
 .grid-full-width { grid-column: 1 / -1; }
 </style>
 

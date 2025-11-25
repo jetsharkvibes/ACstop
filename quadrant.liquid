@@ -1,24 +1,24 @@
 <style>
 :root {
-  --card-radius: 10px;
-  --card-padding: 5px;
-  --time-quad-size: 1.2em;
-  --dest-size: 1.8em;
-  --time-card-radius: 8px;
-  --time-card-padding: 3px 3px;
-  --time-card-color: #000;
-  --time-vertical-size: 1.4em;
-  --flex-display: flex;
-  --justify-between: space-between;
+  --card-round: 10px;
+  --card-space: 5px;
+  --time-quad: 1.2em;
+  --dest-text: 1.8em;
+  --time-round: 8px;
+  --time-space: 3px 3px;
+  --time-fill: #000;
+  --time-vertical: 1.4em;
+  --flex-mode: flex;
+  --justify-mode: space-between;
 }
-.card-quad { border-radius: var(--card-radius); padding: var(--card-padding); }
-.time-quad { line-height: 1.0; font-size: var(--time-quad-size); }
-.card-content { display: var(--flex-display); flex-direction: column; gap: 4px; }
-.route-dest-row { display: var(--flex-display); justify-content: var(--justify-between); align-items: center; gap: 5px; }
-.dest-text { line-height: .7; font-size: var(--dest-size); }
-.times-row { display: var(--flex-display); gap: 8px; flex-wrap: wrap; }
-.time-card { background: white; border-radius: var(--time-card-radius); padding: var(--time-card-padding); color: var(--time-card-color); }
-.time-vertical { line-height: 1.0; font-size: var(--time-vertical-size); }
+.card-quad { border-radius: var(--card-round); padding: var(--card-space); }
+.time-quad { line-height: 1.0; font-size: var(--time-quad); }
+.card-content { display: var(--flex-mode); flex-direction: column; gap: 4px; }
+.route-dest-row { display: var(--flex-mode); justify-content: var(--justify-mode); align-items: center; gap: 5px; }
+.dest-text { line-height: .7; font-size: var(--dest-text); }
+.times-row { display: var(--flex-mode); gap: 8px; flex-wrap: wrap; }
+.time-card { background: white; border-radius: var(--time-round); padding: var(--time-space); color: var(--time-fill); }
+.time-vertical { line-height: 1.0; font-size: var(--time-vertical); }
 </style>
 
 {% comment %} AC Transit API Response Structure {% endcomment %}
