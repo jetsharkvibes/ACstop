@@ -8,22 +8,15 @@
   --badge-text: #000;
   --badge-size: 9px;
   --dest-text: 2.2em;
-  --dest-space: 0px;
   --time-round: 8px;
   --time-space: 3px 3px;
   --time-fill: #000;
-  --flex-mode: flex;
-  --justify-mode: space-between;
 }
 .card-vertical { border-radius: var(--card-round); padding: var(--card-space); }
 .time-vertical { line-height: 1.0; font-size: var(--time-text); }
 .divider-subtle { border-color: rgba(255,255,255,0.06); }
-.badge-row { display: var(--flex-mode); gap: 2px; flex-wrap: nowrap; }
 .badge-sm { background: white; border-radius: var(--badge-round); padding: var(--badge-space); color: var(--badge-text); font-weight: bold; font-size: var(--badge-size); white-space: nowrap; }
-.card-content { display: var(--flex-mode); flex-direction: column; gap: 4px; }
-.route-dest-row { display: var(--flex-mode); justify-content: var(--justify-mode); align-items: center; gap: 6px; }
-.dest-text { line-height: 1; font-size: var(--dest-text); padding: var(--dest-space);}
-.times-row { display: var(--flex-mode); gap: 8px; flex-wrap: wrap; align-items: center; }
+.dest-text { line-height: 1; font-size: var(--dest-text); }
 .time-card { background: white; border-radius: var(--time-round); padding: var(--time-space); color: var(--time-fill); }
 </style>
 
@@ -78,7 +71,7 @@
     {% endfor %}
   {% endif %}
 
-  {% comment %} Second pass: display first card for each unique train with up to 3 times {% endcomment %}
+  {% comment %} Second pass: show first card for each unique train with up to 3 times {% endcomment %}
   {% if unique_trains != "" %}
     {% assign train_array = unique_trains | split: "||" %}
 
@@ -92,15 +85,15 @@
       {% assign destination = train_parts[1] %}
 
       <div class="item bg--black card-vertical">
-        <div class="content card-content">
+        <div class="content layout--col gap--xsmall card-content">
           {% comment %} Route and Destination Header - Two Column Layout {% endcomment %}
-          <div class="route-dest-row">
+          <div class="flex flex--between flex--center-y gap--xsmall route-dest-row">
             <div class="value value--small text--gray-60">{{ route }}</div>
             <div class="label label--small text--gray-50 dest-text" data-clamp="2">{{ destination }}</div>
           </div>
 
           {% comment %} Multiple Times Row - Max 3 {% endcomment %}
-          <div class="times-row">
+          <div class="flex gap--small flex--wrap flex--center-y times-row">
             {% assign time_count = 0 %}
             {% assign has_delay = false %}
 
@@ -153,15 +146,15 @@
         {% comment %} Only show additional card if this train has more than 3 times {% endcomment %}
         {% if total_times > 3 %}
           <div class="item bg--black card-vertical">
-            <div class="content card-content">
+            <div class="content layout--col gap--xsmall card-content">
               {% comment %} Route and Destination Header {% endcomment %}
-              <div class="route-dest-row">
+              <div class="flex flex--between flex--center-y gap--xsmall route-dest-row">
                 <div class="value value--small text--gray-60">{{ route }}</div>
                 <div class="label label--small text--gray-50 dest-text" data-clamp="2">{{ destination }}</div>
               </div>
 
               {% comment %} Show times 4-6 {% endcomment %}
-              <div class="times-row">
+              <div class="flex gap--small flex--wrap flex--center-y times-row">
                 {% assign time_count = 0 %}
                 {% assign time_index = 0 %}
                 {% assign has_delay = false %}
@@ -191,7 +184,7 @@
 
               {% comment %} Badges {% endcomment %}
               {% unless badge_visibility_str contains "no_badges" %}
-                <div class="badge-row">
+                <div class="flex gap--xxsmall badge-row">
                   {% if badge_visibility_str contains "delay" and has_delay %}
                     <div class="badge-sm">DELAY</div>
                   {% endif %}

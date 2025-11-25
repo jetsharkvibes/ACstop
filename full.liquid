@@ -4,13 +4,9 @@
   --card-space: 16px;
   --time-text: 2.6em;
   --dest-text: 2em;
-  --flex-mode: flex;
-  --justify-mode: space-between;
 }
 .card { border-radius: var(--card-round); padding: var(--card-space); }
 .time-main { line-height: 1.0; font-size: var(--time-text); }
-.card-content { display: var(--flex-mode); flex-direction: column; gap: 4px; }
-.route-dest-row { display: var(--flex-mode); justify-content: var(--justify-mode); align-items: center; gap: 8px; }
 .dest-text { line-height: .8; font-size: var(--dest-text); }
 .grid-full-width { grid-column: 1 / -1; }
 </style>
@@ -66,8 +62,8 @@
         {% endif %}
 
         <div class="item bg--black card">
-          <div class="content card-content">
-            <div class="route-dest-row">
+          <div class="content layout--col gap--xsmall card-content">
+            <div class="flex flex--between flex--center-y gap--small route-dest-row">
               <div class="value value--medium text--gray-60">{{ pred.rt }}</div>
               <div class="label label--small text--gray-50 dest-text" data-clamp="2">{{ pred.des }}</div>
             </div>
