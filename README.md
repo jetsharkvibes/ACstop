@@ -71,27 +71,33 @@ Choose from 4 responsive layouts optimized for different screen configurations:
 
 ### Full (3-column grid) - `full.liquid`
 **Best for:** Full-screen displays showing 6 upcoming buses
+- 3-column grid layout with maximum information density
 - Large time display (2.6em)
-- Detailed bus info including route and destination
-- Grid layout with maximum information density
+- Shows route number and destination for each bus
+- Displays individual arrival predictions
 
 ### Half Horizontal (4-column grid) - `half_horizontal.liquid`
 **Best for:** Horizontal half-screen displays showing 4 upcoming buses
-- Compact design with abbreviated labels
-- Efficient use of horizontal space
-- 4-column grid layout
+- 4-column grid layout for efficient horizontal space usage
+- Compact time display (1.8em)
+- Includes delay badges when buses are running late
+- Displays individual arrival predictions
 
 ### Half Vertical (Vertical stack) - `half_vertical.liquid`
-**Best for:** Vertical half-screen displays showing 4 upcoming buses
-- Tight vertical spacing
-- Optimized for tall, narrow displays
-- Stacked layout for vertical orientation
+**Best for:** Vertical half-screen displays showing multiple arrivals per route
+- Vertical stacked layout optimized for tall, narrow displays
+- Shows up to 4 unique route+destination combinations
+- Each card displays up to 3 arrival times for the same route
+- Compact time display (1.2em) with white time cards
+- Includes delay badges
 
-### Quadrant (2-column grid) - `quadrant.liquid`
-**Best for:** Quarter-screen displays showing 2 upcoming buses
-- Medium time display (1.9em)
-- Balanced information density
-- 2-column grid for small spaces
+### Quadrant (Vertical stack) - `quadrant.liquid`
+**Best for:** Quarter-screen displays showing 2 routes with multiple times
+- Vertical stacked layout for small spaces
+- Shows 2 unique route+destination combinations
+- Each card displays up to 3 arrival times for the same route
+- Medium time display (1.4em) with white time cards
+- Consolidates multiple predictions for the same route
 
 ## Configuration Details
 
