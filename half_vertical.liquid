@@ -121,8 +121,20 @@
           {% endif %}
         {% endfor %}
 
-        {% comment %} Only show additional card if this train has more than 3 times {% endcomment %}
-        {% if total_times > 3 %}
+        {% comment %} Count how many times we'll actually show in the 4-6 range {% endcomment %}
+        {% assign additional_times = 0 %}
+        {% assign check_index = 0 %}
+        {% for pred in predictions %}
+          {% if pred.rt == route and pred.des == destination %}
+            {% if check_index >= 3 and additional_times < 3 %}
+              {% assign additional_times = additional_times | plus: 1 %}
+            {% endif %}
+            {% assign check_index = check_index | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+
+        {% comment %} Only show additional card if this train has times to display in the 4-6 range {% endcomment %}
+        {% if additional_times > 0 %}
           <div class="item bg--black rounded--medium" style="padding: 10px;">
             <div class="content layout--col gap--xsmall card-content">
               {% comment %} Route and Destination Header {% endcomment %}
@@ -140,7 +152,7 @@
                 {% for pred in predictions %}
                   {% if pred.rt == route and pred.des == destination %}
                     {% if time_index >= 3 and time_count < 3 %}
-                      <div class="time-card">
+                      <div class="bg--white rounded--small text--black">
                         <div class="value value--medium time-vertical">
                           {% if pred.prdtm %}
                             {{ pred.prdtm | date: "%-I:%M %p" }}
